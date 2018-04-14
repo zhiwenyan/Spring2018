@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+
+<!-- 通过FactoryBean 来配置bean的实例
+	class：指向FactoryBean的全类名  
+	property：配置FactoryBean的属性  
+	但实际返回的实例确实FactoryBean的getObejct()方法返回实例！
+	
+	 -->
+	<bean id="car" class="com.steven.beans.factorybean.CarBeanFactory">
+	
+	<property name="brand" value="Baoma1"></property>
+	</bean>
+	
+	
+	<!--  静态工厂方法：直接调用某一个类的静态方法就可以返回Bean的实例 
+	classs属性：指向静态工厂方法的圈类名
+	Factory-method属性: 指向静态工厂方法的名字  
+	constructor-arg 如果工厂方法需要传入参数，则需要constructor-arg配置参数  
+	
+	-->
+	
+	<bean id="car1" class="com.steven.bean.factory.StaticCarFactory"
+	factory-method="getCar">
+	<constructor-arg value="audi"></constructor-arg>
+	 </bean>
+	 
+	 
+	 <!-- 实例工厂方法 
+	 实例工厂方法:实例工厂的方法。既现需要创建工厂本身，在调用工厂的实例方法来返回bean的实例  
+	 -->
+	 <!-- 配置工厂的实例 -->
+	 
+	 <!-- classs属性：指向实例工厂方法的全类名
+	Factory-method属性: 指向实例工厂方法的名字  
+	constructor-arg 如果工厂方法需要传入参数，则需要constructor-arg配置参数  
+	
+	-->
+	 <bean id="carFactory" class="com.steven.bean.factory.InstanceCarFactory"></bean>
+	 
+	 
+	 <bean id="car2" factory-bean="carFactory" factory-method="getCar">
+	 	<constructor-arg value="Ford"></constructor-arg>
+	 
+	 </bean>
+
+</beans>

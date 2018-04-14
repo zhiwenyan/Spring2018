@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-4.3.xsd">
+	<!-- 配置bean class：文件的全类名，通过反射的方式在IOC容器中创建Bean，所以要求Bean必须含有无参的构造函数 id
+	：标识容器中bean，id唯一 -->
+	<bean id="helloworld" class="com.steven.bean.HelloWorld">
+		<property name="name" value="Spring"></property>
+	</bean>
+	<!-- 通过构造方法配置bean的属性 -->
+	<bean id="car" class="com.steven.bean.Car">
+		<constructor-arg value="Audi" index="0">
+		</constructor-arg>
+		<constructor-arg value="China" index="1">
+		</constructor-arg>
+		<constructor-arg value="88888" type="double">
+
+		</constructor-arg>
+	</bean>
+	<!-- 使用构造器注入属性值可以指定参数的位置和参数的类型！以区分重载的构造器 -->
+	<bean id="car2" class="com.steven.bean.Car">
+		<constructor-arg value="Baoma" type="java.lang.String">
+		</constructor-arg>
+		<constructor-arg type="java.lang.String">
+			<!-- 如果字面值包含特殊字符可以使用<![CDATA]> -->
+			<value><![CDATA[ShangHai$$]]></value>
+		</constructor-arg>
+		<constructor-arg type="int">
+			<!-- 属性值也可以用value节点来注入 -->
+			<value>360</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="person" class="com.steven.bean.Person">
+		<property name="name" value="Steven"></property>
+		<property name="age" value="24"></property>
+		<!-- 在 Bean 的配置文件中, 可以通过 <ref> 元素或 ref 属性为 Bean 的属性或构造器参数指定对 Bean 的引用. -->
+		<property name="car" ref="car2"></property>
+		<!-- <ref /> -->
+	</bean>
+	<bean id="person2" class="com.steven.bean.Person">
+		<constructor-arg value="Steven" type="java.lang.String" />
+		<constructor-arg value="24" type="int" />
+		<constructor-arg ref="car" />
+		<!-- 为级联属性赋值 记住要配置属性的set方法 注意：需要先初始化，才可以为级联属性赋值 -->
+		<property name="car.price" value="30000"></property>
+	</bean>
+
+	<bean id="person3" class="com.steven.beans.collections.Person">
+		<property name="name" value="Steven"></property>
+		<property name="age" value="24"></property>
+		<property name="cars"> 
+			<!-- 利用list节点配置集合List属性 -->
+			<list>
+				<ref bean="car" />
+				<ref bean="car2" />
+				<bean id="car3" class="com.steven.bean.Car">
+					<constructor-arg value="Ford">
+					</constructor-arg>
+					<constructor-arg value="Changan">
+					</constructor-arg>
+					<constructor-arg value="88888" type="double">
+					</constructor-arg>
+				</bean>
+			</list>
+		</property>
+		<!-- <ref /> -->
+	</bean>
+	<bean id="newPerson" class="com.steven.beans.collections.NewPerson">
+		<property name="name" value="Steven"></property>
+		<property name="age" value="24"></property>
+		<property name="cars">
+			<!-- 利用map以及entry子节点配置集合Map集合属性 -->
+			<map>
+				<entry key="A1" value-ref="car"></entry>
+				<entry key="A2" value-ref="car2"></entry>
+			</map>
+		</property>
+	</bean>
+	<!--配置獨立的集合bean,可以供多個bean引用  需要導入util命名空間-->
+	<util:list id="cars">
+		<ref bean="car" />
+		<ref bean="car2" />
+
+	</util:list>
+	<bean id="person4" class="com.steven.beans.collections.Person">
+		<property name="name" value="Steven"></property>
+		<property name="age" value="25"></property>
+		<property name="cars" ref="cars">
+		</property>
+		<!-- <ref /> -->
+	</bean>
+
+</beans>

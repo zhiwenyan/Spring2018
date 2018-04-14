@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- 使用bean的scope属性来作用域 
+	  SingleTon：默認值。容器初始是创建bean实例，在整个容器的生命周期内只创建这个一个bean，单例的。
+	  prototype：原型值。容器初始化是不创建bean的实例。而在每次请求时候创建一个新的bean实例。并返回
+	  request:每次HTTP请求都会创建一个bean，该作用域适用于WebApplicationContext环境 
+	  session:同一个HTTP Session共享一个Bean，不同的HTTP Session使用不同的bean，该作用域适用于WebApplicationContext环境 
+	  
+	  -->
+	<bean id="car" class="com.steven.beans.autowire.Car" scope="prototype">
+		<property name="brand" value="Auid"></property>
+		<property name="price" value="3000000"></property>
+	</bean>
+
+</beans>
